@@ -2,6 +2,7 @@ import json
 import logging
 
 import requests
+import os
 from flask import Flask, request, Response
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
@@ -192,4 +193,4 @@ def incoming():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=33500, debug=False)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
