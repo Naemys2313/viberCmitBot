@@ -48,7 +48,7 @@ def incoming():
     viber_request = viber.parse_request(request.get_data())
 
     if isinstance(viber_request, ViberMessageRequest):
-        logger.debug("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data, viber_request.message.text))
+        print("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data, viber_request.message.text))
         message = KeyboardMessage(tracking_data='tracking_data', keyboard=START_KEYBOARD)
         # lets echo back
         viber.send_messages(viber_request.sender.id, [
