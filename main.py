@@ -11,19 +11,52 @@ from viberbot.api.viber_requests import ViberUnsubscribedRequest
 from viberbot.api.bot_configuration import BotConfiguration
 from viberbot.api.messages.text_message import TextMessage
 from viberbot.api.messages.keyboard_message import KeyboardMessage
+from viberbot.api.messages.message import Message
 
 from flask import Flask, request, Response
 
 START_KEYBOARD = {
     "Type": "keyboard",
     "Buttons": [{
-        "Columns": 1,
+        "Columns": 6,
         "Rows": 1,
         "BgColor": "#FFFFFF",
         "ActionType": "reply",
         "ActionBody": "Reply message",
         "Text": "Push me!"
     }]
+}
+
+START_KEYBOARD = {
+    "Type": "keyboard",
+    "Buttons": [{
+        "Columns": 6,
+        "Rows": 1,
+        "BgColor": "#FFFFFF",
+        "ActionType": "reply",
+        "ActionBody": "Reply message",
+        "Text": "Push me!"
+    }]
+}
+
+REPLIES_KEYBOARD = {
+    "Type": "keyboard",
+    "Buttons": [{
+        "Columns": 6,
+        "Rows": 1,
+        "BgColor": "#FFFFFF",
+        "ActionType": "reply",
+        "ActionBody": "Replies message",
+        "Text": "Replies message!"
+    },
+        {
+            "Columns": 6,
+            "Rows": 1,
+            "BgColor": "#FFFFFF",
+            "ActionType": "reply",
+            "ActionBody": "Back",
+            "Text": "Back!"
+        }]
 }
 
 bot_configuration = BotConfiguration(
@@ -39,6 +72,21 @@ app = Flask(__name__)
 logger = logging.getLogger()
 
 
+def get_message(message: Message):
+    tracking_data = message.tracking_data
+    text = message.text
+    reply_message = Message()
+    if text == "Back":
+        if tracking_data == "Reply message":
+            reply_message = KeyboardMessage(tracking_data=text, keyboard=START_KEYBOARD)
+    elif text == "Replies message":
+        reply_message = KeyboardMessage(tracking_data=text, keyboard=REPLIES_KEYBOARD)
+    else:
+        reply_message = KeyboardMessage(tracking_data=text, keyboard=REPLIES_KEYBOARD)
+
+    return reply_message
+
+
 @app.route('/', methods=['POST'])
 def incoming():
     logger.debug("Recieve request. Post data: {0}".format(request.get_data()))
@@ -48,8 +96,9 @@ def incoming():
     viber_request = viber.parse_request(request.get_data())
 
     if isinstance(viber_request, ViberMessageRequest):
-        print("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data, viber_request.message.text))
-        message = KeyboardMessage(tracking_data='tracking_data', keyboard=START_KEYBOARD)
+        print("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data,
+                                                                          viber_request.message.text))
+        message = get_message(viber_request.message)
         # lets echo back
         viber.send_messages(viber_request.sender.id, [
             message
