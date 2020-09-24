@@ -52,7 +52,7 @@ def get_timetable_buttons():
             "Columns": 3,
             "Rows": 1,
             "BgColor": "#FFFFFF",
-            "ActionType": day_of_weak.get(KEY_ACTION_TYPE),
+            "ActionType": "reply",
             "ActionBody": day_of_weak.get(KEY_TEXT),
             "Text": day_of_weak.get(KEY_TEXT)
         })
@@ -61,7 +61,7 @@ def get_timetable_buttons():
         "Columns": 6,
         "Rows": 1,
         "BgColor": "#FFFFFF",
-        "ActionType": "back",
+        "ActionType": "reply",
         "ActionBody": "Назад",
         "Text": "Назад"
     })
@@ -75,7 +75,7 @@ START_KEYBOARD = {
         "Columns": 6,
         "Rows": 1,
         "BgColor": "#FFFFFF",
-        "ActionType": START.get(KEY_ACTION_TYPE),
+        "ActionType": "reply",
         "ActionBody": START.get(KEY_TEXT),
         "Text": START.get(KEY_TEXT)
     },
@@ -83,7 +83,7 @@ START_KEYBOARD = {
             "Columns": 6,
             "Rows": 1,
             "BgColor": "#FFFFFF",
-            "ActionType": NEWS.get(KEY_ACTION_TYPE),
+            "ActionType": "reply",
             "ActionBody": NEWS.get(KEY_TEXT),
             "Text": NEWS.get(KEY_TEXT)
         }]
