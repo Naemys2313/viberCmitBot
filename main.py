@@ -43,9 +43,6 @@ DAY_OF_WEAK = [
 TIMETABLE = {KEY_ACTION_TYPE: "timetable",
              KEY_TEXT: "Расписание"}
 
-START = {KEY_ACTION_TYPE: "start",
-         KEY_TEXT: "Начать"}
-
 NEWS = {KEY_ACTION_TYPE: "news",
         KEY_TEXT: "Новости ЦМИТ"}
 
@@ -92,8 +89,8 @@ START_KEYBOARD = {
         "Rows": 1,
         "BgColor": "#FFFFFF",
         "ActionType": "reply",
-        "ActionBody": START.get(KEY_ACTION_TYPE),
-        "Text": START.get(KEY_TEXT)
+        "ActionBody": TIMETABLE.get(KEY_ACTION_TYPE),
+        "Text": TIMETABLE.get(KEY_TEXT)
     },
         {
             "Columns": 6,
@@ -127,7 +124,7 @@ HELLO_MESSAGE = "Вас приветствует цифровой помощни
 
 def get_messages(message: Message):
     text = message.text
-    if text == START.get(KEY_ACTION_TYPE):
+    if text == TIMETABLE.get(KEY_ACTION_TYPE):
         keyboard = TIMETABLE_KEYBOARD
         reply_message = None
     elif text == NEWS.get(KEY_ACTION_TYPE):
