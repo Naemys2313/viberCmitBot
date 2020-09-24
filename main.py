@@ -82,7 +82,7 @@ def get_message(message: Message):
     elif text == "Replies message":
         reply_message = KeyboardMessage(tracking_data=text, keyboard=REPLIES_KEYBOARD)
     else:
-        reply_message = KeyboardMessage(tracking_data=text, keyboard=REPLIES_KEYBOARD)
+        reply_message = KeyboardMessage(tracking_data=text, keyboard=START_KEYBOARD)
 
     return reply_message
 
