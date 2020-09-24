@@ -18,6 +18,11 @@ from flask import Flask, request, Response
 KEY_ACTION_TYPE = "action_type"
 KEY_TEXT = "text"
 
+BACK = {
+    KEY_ACTION_TYPE: "back",
+    KEY_TEXT: "Назад"
+}
+
 DAY_OF_WEAK = [
     {KEY_ACTION_TYPE: "monday",
      KEY_TEXT: "Понедельник"},
@@ -117,9 +122,53 @@ app = Flask(__name__)
 
 logger = logging.getLogger()
 
+HELLO_MESSAGE = "Вас приветствует цифровой помощник ЦМИТа Вертикаль.\nДля начала взаимодействия нажмите кнопку начать"
+
 
 def get_messages(message: Message):
-    pass
+    text = message.text
+    messages = []
+    keyboard = ""
+    reply_message = ""
+    if text == START.get(KEY_ACTION_TYPE):
+        keyboard = TIMETABLE_KEYBOARD
+        reply_message = NEWS.get(KEY_TEXT)
+    elif text == NEWS.get(KEY_ACTION_TYPE):
+        keyboard = START_KEYBOARD
+        reply_message = NEWS.get(KEY_TEXT)
+
+    elif text == DAY_OF_WEAK[0].get(KEY_ACTION_TYPE):
+        keyboard = TIMETABLE_KEYBOARD
+        reply_message = DAY_OF_WEAK[0].get(KEY_TEXT)
+    elif text == DAY_OF_WEAK[1].get(KEY_ACTION_TYPE):
+        keyboard = TIMETABLE_KEYBOARD
+        reply_message = DAY_OF_WEAK[1].get(KEY_TEXT)
+    elif text == DAY_OF_WEAK[2].get(KEY_ACTION_TYPE):
+        keyboard = TIMETABLE_KEYBOARD
+        reply_message = DAY_OF_WEAK[2].get(KEY_TEXT)
+    elif text == DAY_OF_WEAK[3].get(KEY_ACTION_TYPE):
+        keyboard = TIMETABLE_KEYBOARD
+        reply_message = DAY_OF_WEAK[3].get(KEY_TEXT)
+    elif text == DAY_OF_WEAK[4].get(KEY_ACTION_TYPE):
+        keyboard = TIMETABLE_KEYBOARD
+        reply_message = DAY_OF_WEAK[4].get(KEY_TEXT)
+    elif text == DAY_OF_WEAK[5].get(KEY_ACTION_TYPE):
+        keyboard = TIMETABLE_KEYBOARD
+        reply_message = DAY_OF_WEAK[5].get(KEY_TEXT)
+    elif text == DAY_OF_WEAK[6].get(KEY_ACTION_TYPE):
+        keyboard = TIMETABLE_KEYBOARD
+        reply_message = DAY_OF_WEAK[6].get(KEY_TEXT)
+    elif text == BACK.get(KEY_ACTION_TYPE):
+        keyboard = START_KEYBOARD
+        reply_message = None
+
+    else:
+        keyboard = START_KEYBOARD
+        reply_message = HELLO_MESSAGE
+
+    messages.append(TextMessage(keyboard=keyboard, text=reply_message))
+
+    return messages
 
 
 @app.route('/', methods=['POST'])
@@ -133,11 +182,10 @@ def incoming():
     if isinstance(viber_request, ViberMessageRequest):
         print("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data,
                                                                           viber_request.message.text))
-        messages = [KeyboardMessage(keyboard=TIMETABLE_KEYBOARD)]
-        # lets echo back
-        viber.send_messages(viber_request.sender.id, messages)
+
+        viber.send_messages(viber_request.sender.id, get_messages(viber_request.message))
     elif isinstance(viber_request, ViberSubscribedRequest):
-        viber.send_messages(viber_request.user.id, [TextMessage("Спасибо за подписку!")])
+        viber.send_messages(viber_request.user.id, [TextMessage(text=HELLO_MESSAGE, keyboard=START_KEYBOARD)])
     elif isinstance(viber_request, ViberFailedRequest):
         logger.warn("Client failed receiving message. Failure: {0}".format(viber_request))
 
