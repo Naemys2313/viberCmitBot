@@ -57,77 +57,81 @@ def get_timetable_buttons():
             "Text": day_of_weak.get(KEY_TEXT)
         })
 
-        buttons.append({
+    buttons.append({
+        "Columns": 6,
+        "Rows": 1,
+        "BgColor": "#FFFFFF",
+        "ActionType": "reply",
+        "ActionBody": "Назад",
+        "Text": "Назад"
+    })
+
+    return buttons
+
+
+START_KEYBOARD = {
+    "Type": "keyboard",
+    "Buttons": [{
+        "Columns": 6,
+        "Rows": 1,
+        "BgColor": "#FFFFFF",
+        "ActionType": "reply",
+        "ActionBody": START.get(KEY_TEXT),
+        "Text": START.get(KEY_TEXT)
+    },
+        {
             "Columns": 6,
             "Rows": 1,
             "BgColor": "#FFFFFF",
             "ActionType": "reply",
-            "ActionBody": "Назад",
-            "Text": "Назад"
-        })
+            "ActionBody": NEWS.get(KEY_TEXT),
+            "Text": NEWS.get(KEY_TEXT)
+        }]
+}
 
-        return buttons
+TIMETABLE_KEYBOARD = {
+    "Type": "keyboard",
+    "Buttons": get_timetable_buttons()
+}
 
-    START_KEYBOARD = {
-        "Type": "keyboard",
-        "Buttons": [{
-            "Columns": 6,
-            "Rows": 1,
-            "BgColor": "#FFFFFF",
-            "ActionType": "reply",
-            "ActionBody": START.get(KEY_TEXT),
-            "Text": START.get(KEY_TEXT)
-        },
-            {
-                "Columns": 6,
-                "Rows": 1,
-                "BgColor": "#FFFFFF",
-                "ActionType": "reply",
-                "ActionBody": NEWS.get(KEY_TEXT),
-                "Text": NEWS.get(KEY_TEXT)
-            }]
-    }
+bot_configuration = BotConfiguration(
+    name="CmitUgraBot",
+    avatar="",
+    auth_token="4a94130713a7d0bb-3633cc6c70d45392-94364c0dd093822"
+)
 
-    TIMETABLE_KEYBOARD = {
-        "Type": "keyboard",
-        "Buttons": get_timetable_buttons()
-    }
+viber = Api(bot_configuration)
 
-    bot_configuration = BotConfiguration(
-        name="CmitUgraBot",
-        avatar="",
-        auth_token="4a94130713a7d0bb-3633cc6c70d45392-94364c0dd093822"
-    )
+app = Flask(__name__)
 
-    viber = Api(bot_configuration)
+logger = logging.getLogger()
 
-    app = Flask(__name__)
 
-    logger = logging.getLogger()
+def get_messages(message: Message):
+    pass
 
-    def get_messages(message: Message):
-        pass
 
-    @app.route('/', methods=['POST'])
-    def incoming():
-        logger.debug("Recieve request. Post data: {0}".format(request.get_data()))
-        if not viber.verify_signature(request.get_data(), request.headers.get('X-Viber-Content-Signature')):
-            return Response(status=403)
+@app.route('/', methods=['POST'])
+def incoming():
+    logger.debug("Recieve request. Post data: {0}".format(request.get_data()))
+    if not viber.verify_signature(request.get_data(), request.headers.get('X-Viber-Content-Signature')):
+        return Response(status=403)
 
-        viber_request = viber.parse_request(request.get_data())
+    viber_request = viber.parse_request(request.get_data())
 
-        if isinstance(viber_request, ViberMessageRequest):
-            print("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data,
-                                                                              viber_request.message.text))
-            messages = [KeyboardMessage(keyboard=TIMETABLE_KEYBOARD)]
-            # lets echo back
-            viber.send_messages(viber_request.sender.id, messages)
-        elif isinstance(viber_request, ViberSubscribedRequest):
-            viber.send_messages(viber_request.user.id, [TextMessage("Спасибо за подписку!")])
-        elif isinstance(viber_request, ViberFailedRequest):
-            logger.warn("Client failed receiving message. Failure: {0}".format(viber_request))
+    if isinstance(viber_request, ViberMessageRequest):
+        print("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data,
+                                                                          viber_request.message.text))
+        messages = [KeyboardMessage(keyboard=TIMETABLE_KEYBOARD)]
+        # lets echo back
+        viber.send_messages(viber_request.sender.id, messages)
+    elif isinstance(viber_request, ViberSubscribedRequest):
+        viber.send_messages(viber_request.user.id, [TextMessage("Спасибо за подписку!")])
+    elif isinstance(viber_request, ViberFailedRequest):
+        logger.warn("Client failed receiving message. Failure: {0}".format(viber_request))
 
-        return Response(status=200)
+    return Response(status=200)
 
-    if __name__ == '__main__':
-        app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
