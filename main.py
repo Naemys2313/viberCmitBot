@@ -73,18 +73,18 @@ logger = logging.getLogger()
 
 
 def get_message(message: Message):
+    messages = []
     tracking_data = message.tracking_data
     text = message.text
-    reply_message = Message()
     if text == "Back":
         if tracking_data == "Reply message":
-            reply_message = KeyboardMessage(tracking_data=text, keyboard=START_KEYBOARD)
+            messages.append(KeyboardMessage(tracking_data=text, keyboard=START_KEYBOARD))
     elif text == "Reply message" or text == "Replies message":
-        reply_message = KeyboardMessage(tracking_data=text, keyboard=REPLIES_KEYBOARD)
+        messages.append(KeyboardMessage(tracking_data=text, keyboard=REPLIES_KEYBOARD))
     else:
-        reply_message = KeyboardMessage(tracking_data=text, keyboard=START_KEYBOARD)
-
-    return reply_message
+        messages.append(KeyboardMessage(tracking_data=text, keyboard=START_KEYBOARD))
+    messages.append(TextMessage(text))
+    return messages
 
 
 @app.route('/', methods=['POST'])
