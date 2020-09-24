@@ -10,8 +10,21 @@ from viberbot.api.viber_requests import ViberSubscribedRequest
 from viberbot.api.viber_requests import ViberUnsubscribedRequest
 from viberbot.api.bot_configuration import BotConfiguration
 from viberbot.api.messages.text_message import TextMessage
+from viberbot.api.messages.keyboard_message import KeyboardMessage
 
 from flask import Flask, request, Response
+
+SAMPLE_KEYBOARD = {
+    "Type": "keyboard",
+    "Buttons": [{
+        "Columns": 3,
+        "Rows": 2,
+        "BgColor": "#FFFFFF",
+        "ActionType": "reply",
+        "ActionBody": "Reply message",
+        "Text": "Push me!"
+    }]
+}
 
 bot_configuration = BotConfiguration(
     name="CmitUgraBot",
@@ -35,7 +48,7 @@ def incoming():
     viber_request = viber.parse_request(request.get_data())
 
     if isinstance(viber_request, ViberMessageRequest):
-        message = viber_request.message
+        message = KeyboardMessage(tracking_data='tracking_data', keyboard=SAMPLE_KEYBOARD)
         # lets echo back
         viber.send_messages(viber_request.sender.id, [
             message
