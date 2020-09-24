@@ -15,17 +15,59 @@ from viberbot.api.messages.message import Message
 
 from flask import Flask, request, Response
 
-START_KEYBOARD = {
-    "Type": "keyboard",
-    "Buttons": [{
+KEY_ACTION_TYPE = "action_type"
+KEY_TEXT = "text"
+
+DAY_OF_WEAK = [
+    {KEY_ACTION_TYPE: "monday",
+     KEY_TEXT: "Понедельник"},
+    {KEY_ACTION_TYPE: "tuesday",
+     KEY_TEXT: "Вторник"},
+    {KEY_ACTION_TYPE: "wednesday",
+     KEY_TEXT: "Среда"},
+    {KEY_ACTION_TYPE: "thursday",
+     KEY_TEXT: "Четверг"},
+    {KEY_ACTION_TYPE: "friday",
+     KEY_TEXT: "Пятница"},
+    {KEY_ACTION_TYPE: "saturday",
+     KEY_TEXT: "Суббота"},
+    {KEY_ACTION_TYPE: "sunday",
+     KEY_TEXT: "Воскресенье"},
+]
+
+TIMETABLE = {KEY_ACTION_TYPE: "timetable",
+             KEY_TEXT: "Расписание"}
+
+START = {KEY_ACTION_TYPE: "start",
+         KEY_TEXT: "Начать"}
+
+NEWS = {KEY_ACTION_TYPE: "news",
+        KEY_TEXT: "Новости ЦМИТ"}
+
+
+def get_timetable_buttons():
+    buttons = []
+    for day_of_weak in DAY_OF_WEAK:
+        buttons.append({
+            "Columns": 3,
+            "Rows": 1,
+            "BgColor": "#FFFFFF",
+            "ActionType": day_of_weak.get(KEY_ACTION_TYPE),
+            "ActionBody": day_of_weak.get(KEY_TEXT),
+            "Text": day_of_weak.get(KEY_TEXT)
+        })
+
+    buttons.append({
         "Columns": 6,
         "Rows": 1,
         "BgColor": "#FFFFFF",
-        "ActionType": "reply",
-        "ActionBody": "Reply message",
-        "Text": "Push me!"
-    }]
-}
+        "ActionType": "back",
+        "ActionBody": "Назад",
+        "Text": "Назад"
+    })
+
+    return buttons
+
 
 START_KEYBOARD = {
     "Type": "keyboard",
@@ -33,30 +75,23 @@ START_KEYBOARD = {
         "Columns": 6,
         "Rows": 1,
         "BgColor": "#FFFFFF",
-        "ActionType": "reply",
-        "ActionBody": "Reply message",
-        "Text": "Push me!"
-    }]
-}
-
-REPLIES_KEYBOARD = {
-    "Type": "keyboard",
-    "Buttons": [{
-        "Columns": 6,
-        "Rows": 1,
-        "BgColor": "#FFFFFF",
-        "ActionType": "reply",
-        "ActionBody": "Replies message",
-        "Text": "Replies message!"
+        "ActionType": START.get(KEY_ACTION_TYPE),
+        "ActionBody": START.get(KEY_TEXT),
+        "Text": START.get(KEY_TEXT)
     },
         {
             "Columns": 6,
             "Rows": 1,
             "BgColor": "#FFFFFF",
-            "ActionType": "reply",
-            "ActionBody": "Back",
-            "Text": "Back!"
+            "ActionType": NEWS.get(KEY_ACTION_TYPE),
+            "ActionBody": NEWS.get(KEY_TEXT),
+            "Text": NEWS.get(KEY_TEXT)
         }]
+}
+
+TIMETABLE_KEYBOARD = {
+    "Type": "keyboard",
+    "Buttons": get_timetable_buttons()
 }
 
 bot_configuration = BotConfiguration(
@@ -73,19 +108,7 @@ logger = logging.getLogger()
 
 
 def get_messages(message: Message):
-    messages = []
-    tracking_data = message.tracking_data
-    text = message.text
-    keyboard = ""
-    if text == "Back":
-        if tracking_data == "Reply message":
-            keyboard = START_KEYBOARD
-    elif text == "Reply message" or text == "Replies message":
-        keyboard = REPLIES_KEYBOARD
-    else:
-        keyboard = START_KEYBOARD
-    messages.append(TextMessage(text=text, tracking_data="Reply message", keyboard=keyboard))
-    return messages
+    pass
 
 
 @app.route('/', methods=['POST'])
@@ -99,7 +122,7 @@ def incoming():
     if isinstance(viber_request, ViberMessageRequest):
         print("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data,
                                                                           viber_request.message.text))
-        messages = get_messages(viber_request.message)
+        messages = [KeyboardMessage(keyboard=TIMETABLE_KEYBOARD)]
         # lets echo back
         viber.send_messages(viber_request.sender.id, messages)
     elif isinstance(viber_request, ViberSubscribedRequest):
