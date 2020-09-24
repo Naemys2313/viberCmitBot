@@ -72,7 +72,7 @@ app = Flask(__name__)
 logger = logging.getLogger()
 
 
-def get_message(message: Message):
+def get_messages(message: Message):
     messages = []
     tracking_data = message.tracking_data
     text = message.text
@@ -98,11 +98,9 @@ def incoming():
     if isinstance(viber_request, ViberMessageRequest):
         print("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data,
                                                                           viber_request.message.text))
-        message = get_message(viber_request.message)
+        messages = get_messages(viber_request.message)
         # lets echo back
-        viber.send_messages(viber_request.sender.id, [
-            message
-        ])
+        viber.send_messages(viber_request.sender.id, messages)
     elif isinstance(viber_request, ViberSubscribedRequest):
         viber.send_messages(viber_request.user.id, [TextMessage("Спасибо за подписку!")])
     elif isinstance(viber_request, ViberFailedRequest):
