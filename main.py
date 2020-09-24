@@ -79,7 +79,7 @@ def get_message(message: Message):
     if text == "Back":
         if tracking_data == "Reply message":
             reply_message = KeyboardMessage(tracking_data=text, keyboard=START_KEYBOARD)
-    elif text == "Replies message":
+    elif text == "Reply message" or text == "Replies message":
         reply_message = KeyboardMessage(tracking_data=text, keyboard=REPLIES_KEYBOARD)
     else:
         reply_message = KeyboardMessage(tracking_data=text, keyboard=START_KEYBOARD)
