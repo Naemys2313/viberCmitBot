@@ -76,13 +76,15 @@ def get_messages(message: Message):
     messages = []
     tracking_data = message.tracking_data
     text = message.text
+    keyboard = ""
     if text == "Back":
         if tracking_data == "Reply message":
-            messages.append(KeyboardMessage(tracking_data=text, keyboard=START_KEYBOARD))
+            keyboard = START_KEYBOARD
     elif text == "Reply message" or text == "Replies message":
-        messages.append(KeyboardMessage(tracking_data=text, keyboard=REPLIES_KEYBOARD))
+        keyboard = REPLIES_KEYBOARD
     else:
-        messages.append(TextMessage(keyboard=KeyboardMessage(tracking_data=text, keyboard=START_KEYBOARD), text=text))
+        keyboard = START_KEYBOARD
+    messages.append(TextMessage(text=text, tracking_data="Reply message", keyboard=keyboard))
     return messages
 
 
