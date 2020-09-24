@@ -78,8 +78,8 @@ def get_timetable_buttons():
         "Rows": 1,
         "BgColor": "#FFFFFF",
         "ActionType": "reply",
-        "ActionBody": "Назад",
-        "Text": "Назад"
+        "ActionBody": BACK.get(KEY_ACTION_TYPE),
+        "Text": BACK.get(KEY_TEXT)
     })
 
     return buttons
@@ -127,12 +127,9 @@ HELLO_MESSAGE = "Вас приветствует цифровой помощни
 
 def get_messages(message: Message):
     text = message.text
-    messages = []
-    keyboard = ""
-    reply_message = ""
     if text == START.get(KEY_ACTION_TYPE):
         keyboard = TIMETABLE_KEYBOARD
-        reply_message = START.get(KEY_TEXT)
+        reply_message = None
     elif text == NEWS.get(KEY_ACTION_TYPE):
         keyboard = START_KEYBOARD
         reply_message = NEWS.get(KEY_TEXT)
@@ -166,9 +163,10 @@ def get_messages(message: Message):
         keyboard = START_KEYBOARD
         reply_message = HELLO_MESSAGE
 
-    messages.append(TextMessage(keyboard=keyboard, text=reply_message))
-
-    return messages
+    if reply_message is None:
+        return [KeyboardMessage(keyboard=keyboard)]
+    else:
+        return [TextMessage(text=reply_message, keyboard=keyboard)]
 
 
 @app.route('/', methods=['POST'])
