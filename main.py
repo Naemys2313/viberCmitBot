@@ -132,7 +132,7 @@ def get_messages(message: Message):
     reply_message = ""
     if text == START.get(KEY_ACTION_TYPE):
         keyboard = TIMETABLE_KEYBOARD
-        reply_message = NEWS.get(KEY_TEXT)
+        reply_message = START.get(KEY_TEXT)
     elif text == NEWS.get(KEY_ACTION_TYPE):
         keyboard = START_KEYBOARD
         reply_message = NEWS.get(KEY_TEXT)
