@@ -28,7 +28,7 @@ logger = logging.getLogger()
 
 @app.route('/', methods=['POST'])
 def incoming():
-    logger.debug("Recieve request. Post data: {0}".format(request.get_date()))
+    logger.debug("Recieve request. Post data: {0}".format(request.get_data()))
     if not viber.verify_signature(request.get_data(), request.headers.get('X-Viber-Content-Signature')):
         return Response(status=403)
 
