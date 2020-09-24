@@ -92,7 +92,7 @@ START_KEYBOARD = {
         "Rows": 1,
         "BgColor": "#FFFFFF",
         "ActionType": "reply",
-        "ActionBody": START.get(KEY_TEXT),
+        "ActionBody": START.get(KEY_ACTION_TYPE),
         "Text": START.get(KEY_TEXT)
     },
         {
@@ -100,7 +100,7 @@ START_KEYBOARD = {
             "Rows": 1,
             "BgColor": "#FFFFFF",
             "ActionType": "reply",
-            "ActionBody": NEWS.get(KEY_TEXT),
+            "ActionBody": NEWS.get(KEY_ACTION_TYPE),
             "Text": NEWS.get(KEY_TEXT)
         }]
 }
