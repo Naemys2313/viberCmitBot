@@ -49,7 +49,7 @@ def get_timetable_buttons():
     buttons = []
     for day_of_weak in DAY_OF_WEAK:
         buttons.append({
-            "Columns": 6 if day_of_weak.get(KEY_ACTION_TYPE) == DAY_OF_WEAK[6].get(KEY_ACTION_TYPE) else 3,
+            "Columns": 3,
             "Rows": 1,
             "BgColor": "#FFFFFF",
             "ActionType": "reply",
