@@ -17,8 +17,8 @@ from flask import Flask, request, Response
 SAMPLE_KEYBOARD = {
     "Type": "keyboard",
     "Buttons": [{
-        "Columns": 3,
-        "Rows": 2,
+        "Columns": 1,
+        "Rows": 1,
         "BgColor": "#FFFFFF",
         "ActionType": "reply",
         "ActionBody": "Reply message",
