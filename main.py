@@ -48,14 +48,25 @@ NEWS = {KEY_ACTION_TYPE: "news",
 def get_timetable_buttons():
     buttons = []
     for day_of_weak in DAY_OF_WEAK:
+        if day_of_weak.get(KEY_ACTION_TYPE) == DAY_OF_WEAK[6].get(KEY_ACTION_TYPE):
+            break
         buttons.append({
             "Columns": 3,
             "Rows": 1,
             "BgColor": "#FFFFFF",
             "ActionType": "reply",
-            "ActionBody": day_of_weak.get(KEY_TEXT),
+            "ActionBody": day_of_weak.get(KEY_ACTION_TYPE),
             "Text": day_of_weak.get(KEY_TEXT)
         })
+
+    buttons.append({
+        "Columns": 6,
+        "Rows": 1,
+        "BgColor": "#FFFFFF",
+        "ActionType": "reply",
+        "ActionBody": DAY_OF_WEAK[6].get(KEY_ACTION_TYPE),
+        "Text": DAY_OF_WEAK[6].get(KEY_TEXT)
+    })
 
     buttons.append({
         "Columns": 6,
