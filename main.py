@@ -207,7 +207,8 @@ def mailing():
 
 
 def schedule_mailing():
-    schedule.every().minutes.do(mailing)
+    while True:
+        schedule.every().minutes.do(mailing)
 
 
 thread = Thread(target=schedule_mailing)
