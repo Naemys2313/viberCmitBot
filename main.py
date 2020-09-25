@@ -201,29 +201,6 @@ def get_messages(message: Message):
         return [TextMessage(text=reply_message, keyboard=keyboard)]
 
 
-@app.route('/', methods=['POST'])
-def incoming():
-    logger.debug("Recieve request. Post data: {0}".format(request.get_data()))
-    if not viber.verify_signature(request.get_data(), request.headers.get('X-Viber-Content-Signature')):
-        return Response(status=403)
-
-    viber_request = viber.parse_request(request.get_data())
-
-    if isinstance(viber_request, ViberMessageRequest):
-        print("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data,
-                                                                          viber_request.message.text))
-        if not viber_request.sender.id in user_ids:
-            user_ids.append(viber_request.sender.id)
-
-        viber.send_messages(viber_request.sender.id, get_messages(viber_request.message))
-    elif isinstance(viber_request, ViberSubscribedRequest):
-        viber.send_messages(viber_request.user.id, [TextMessage(text=HELLO_MESSAGE, keyboard=START_KEYBOARD)])
-    elif isinstance(viber_request, ViberFailedRequest):
-        logger.warn("Client failed receiving message. Failure: {0}".format(viber_request))
-
-    return Response(status=200)
-
-
 def mailing():
     for user_id in user_ids:
         viber.send_messages(user_id, [TextMessage(keyboard=START_KEYBOARD, text="Тест авторассылки")])
@@ -235,6 +212,31 @@ def schedule_mailing():
 
 thread = Thread(target=schedule_mailing)
 thread.start()
+
+
+@app.route('/', methods=['POST'])
+def incoming():
+    print(thread.is_alive())
+    logger.debug("Recieve request. Post data: {0}".format(request.get_data()))
+    if not viber.verify_signature(request.get_data(), request.headers.get('X-Viber-Content-Signature')):
+        return Response(status=403)
+
+    viber_request = viber.parse_request(request.get_data())
+
+    if isinstance(viber_request, ViberMessageRequest):
+        print("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data,
+                                                                          viber_request.message.text))
+        if viber_request.sender.id not in user_ids:
+            user_ids.append(viber_request.sender.id)
+
+        viber.send_messages(viber_request.sender.id, get_messages(viber_request.message))
+    elif isinstance(viber_request, ViberSubscribedRequest):
+        viber.send_messages(viber_request.user.id, [TextMessage(text=HELLO_MESSAGE, keyboard=START_KEYBOARD)])
+    elif isinstance(viber_request, ViberFailedRequest):
+        logger.warn("Client failed receiving message. Failure: {0}".format(viber_request))
+
+    return Response(status=200)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
