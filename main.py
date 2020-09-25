@@ -46,6 +46,12 @@ TIMETABLE = {KEY_ACTION_TYPE: "timetable",
 NEWS = {KEY_ACTION_TYPE: "news",
         KEY_TEXT: "Новости ЦМИТ"}
 
+PAY_NOW = {KEY_ACTION_TYPE: "pay_now",
+           KEY_TEXT: "Оплатить сейчас"}
+
+PAY_LATE = {KEY_ACTION_TYPE: "pay_late",
+            KEY_TEXT: "Оплатить позже"}
+
 
 def get_timetable_buttons():
     buttons = []
@@ -99,7 +105,24 @@ START_KEYBOARD = {
             "ActionType": "reply",
             "ActionBody": NEWS.get(KEY_ACTION_TYPE),
             "Text": NEWS.get(KEY_TEXT)
-        }]
+        },
+        {
+            "Columns": 6,
+            "Rows": 1,
+            "BgColor": "#FFFFFF",
+            "ActionType": "reply",
+            "ActionBody": PAY_NOW.get(KEY_ACTION_TYPE),
+            "Text": PAY_NOW.get(KEY_TEXT)
+        },
+        {
+            "Columns": 6,
+            "Rows": 1,
+            "BgColor": "#FFFFFF",
+            "ActionType": "reply",
+            "ActionBody": PAY_LATE.get(KEY_ACTION_TYPE),
+            "Text": PAY_LATE.get(KEY_TEXT)
+        }
+    ]
 }
 
 TIMETABLE_KEYBOARD = {
@@ -130,6 +153,12 @@ def get_messages(message: Message):
     elif text == NEWS.get(KEY_ACTION_TYPE):
         keyboard = START_KEYBOARD
         reply_message = NEWS.get(KEY_TEXT)
+    elif text == PAY_NOW.get(KEY_ACTION_TYPE):
+        keyboard = START_KEYBOARD
+        reply_message = "www.google.com"
+    elif text == PAY_LATE.get(KEY_ACTION_TYPE):
+        keyboard = START_KEYBOARD
+        reply_message = "Здесь должны быть реквизиты"
 
     elif text == DAY_OF_WEAK[0].get(KEY_ACTION_TYPE):
         keyboard = TIMETABLE_KEYBOARD
