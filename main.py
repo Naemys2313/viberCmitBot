@@ -207,7 +207,7 @@ def mailing():
         viber.send_messages(user_id, [TextMessage(keyboard=START_KEYBOARD, text="Тест авторассылки")])
 
 
-schedule.every().minutes.do(mailing)
+schedule.every().day.at("10:30").do(mailing)
 
 
 def schedule_mailing():
