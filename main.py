@@ -12,6 +12,7 @@ from viberbot.api.bot_configuration import BotConfiguration
 from viberbot.api.messages.text_message import TextMessage
 from viberbot.api.messages.keyboard_message import KeyboardMessage
 from viberbot.api.messages.message import Message
+from viberbot.api.messages.url_message import URLMessage
 
 from flask import Flask, request, Response
 
@@ -191,6 +192,8 @@ def get_messages(message: Message):
 
     if reply_message is None:
         return [KeyboardMessage(keyboard=keyboard)]
+    elif reply_message == PAY_NOW.get(KEY_TEXT):
+        return [URLMessage(keyboard=keyboard, media="www.google.com")]
     else:
         return [TextMessage(text=reply_message, keyboard=keyboard)]
 
