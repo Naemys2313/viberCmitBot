@@ -193,6 +193,7 @@ def get_messages(message: Message):
     if reply_message is None:
         return [KeyboardMessage(keyboard=keyboard)]
     elif reply_message == PAY_NOW.get(KEY_TEXT):
+        print("here")
         return [URLMessage(keyboard=keyboard, media="www.google.com")]
     else:
         return [TextMessage(text=reply_message, keyboard=keyboard)]
