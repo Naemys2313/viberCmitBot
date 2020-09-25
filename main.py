@@ -156,7 +156,7 @@ def get_messages(message: Message):
         reply_message = NEWS.get(KEY_TEXT)
     elif text == PAY_NOW.get(KEY_ACTION_TYPE):
         keyboard = START_KEYBOARD
-        reply_message = None
+        reply_message = PAY_NOW.get(KEY_TEXT)
     elif text == PAY_LATE.get(KEY_ACTION_TYPE):
         keyboard = START_KEYBOARD
         reply_message = "Здесь должны быть реквизиты"
