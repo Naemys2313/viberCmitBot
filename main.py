@@ -1,13 +1,11 @@
-import json
 import logging
 import os
+from threading import Thread
 
 from viberbot import Api
 from viberbot.api.viber_requests import ViberMessageRequest
 from viberbot.api.viber_requests import ViberFailedRequest
-from viberbot.api.viber_requests import ViberConversationStartedRequest
 from viberbot.api.viber_requests import ViberSubscribedRequest
-from viberbot.api.viber_requests import ViberUnsubscribedRequest
 from viberbot.api.bot_configuration import BotConfiguration
 from viberbot.api.messages.text_message import TextMessage
 from viberbot.api.messages.keyboard_message import KeyboardMessage
@@ -15,6 +13,10 @@ from viberbot.api.messages.message import Message
 from viberbot.api.messages.url_message import URLMessage
 
 from flask import Flask, request, Response
+
+import schedule
+
+user_ids = []
 
 KEY_ACTION_TYPE = "action_type"
 KEY_TEXT = "text"
@@ -210,6 +212,8 @@ def incoming():
     if isinstance(viber_request, ViberMessageRequest):
         print("message.tracking_data: {0}, message.action_body{1}".format(viber_request.message.tracking_data,
                                                                           viber_request.message.text))
+        if not viber_request.sender.id in user_ids:
+            user_ids.append(viber_request.sender.id)
 
         viber.send_messages(viber_request.sender.id, get_messages(viber_request.message))
     elif isinstance(viber_request, ViberSubscribedRequest):
@@ -219,6 +223,18 @@ def incoming():
 
     return Response(status=200)
 
+
+def mailing():
+    for user_id in user_ids:
+        viber.send_messages(user_id, [TextMessage(keyboard=START_KEYBOARD, text="Тест авторассылки")])
+
+
+def schedule_mailing():
+    schedule.every().minutes.do(mailing)
+
+
+thread = Thread(target=schedule_mailing)
+thread.start()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
