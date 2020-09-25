@@ -194,7 +194,7 @@ def get_messages(message: Message):
         return [KeyboardMessage(keyboard=keyboard)]
     elif reply_message == PAY_NOW.get(KEY_TEXT):
         print("here")
-        return [URLMessage(keyboard=keyboard, media="www.google.com")]
+        return [URLMessage(keyboard=keyboard, media="https://www.google.com")]
     else:
         return [TextMessage(text=reply_message, keyboard=keyboard)]
 
