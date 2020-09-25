@@ -207,10 +207,13 @@ def mailing():
         viber.send_messages(user_id, [TextMessage(keyboard=START_KEYBOARD, text="Тест авторассылки")])
 
 
+schedule.every().minutes.do(mailing)
+
+
 def schedule_mailing():
     while True:
-        schedule.every().minutes.do(mailing)
-        time.sleep(10)
+        schedule.run_pending()
+        time.sleep(1)
 
 
 thread = Thread(target=schedule_mailing)
