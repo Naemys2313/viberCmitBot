@@ -15,6 +15,7 @@ from viberbot.api.messages.url_message import URLMessage
 from flask import Flask, request, Response
 
 import schedule
+import time
 
 user_ids = []
 
@@ -209,6 +210,7 @@ def mailing():
 def schedule_mailing():
     while True:
         schedule.every().minutes.do(mailing)
+        time.sleep(10)
 
 
 thread = Thread(target=schedule_mailing)
