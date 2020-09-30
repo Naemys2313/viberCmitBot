@@ -213,8 +213,7 @@ COURSES_KEYBOARD = {
             "Columns": 6,
             "Rows": 1,
             "BgColor": "#FFFFFF",
-            "BgMedia": "",
-            "ActionType": "open_url",
+            "ActionType": "open-url",
             "ActionBody": SIGN_UP_FOR_COURSE.get(KEY_CALLBACK),
             "Text": SIGN_UP_FOR_COURSE.get(KEY_TEXT)
         },
