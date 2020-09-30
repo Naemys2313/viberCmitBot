@@ -147,7 +147,7 @@ START_KEYBOARD = {
             "Columns": 6,
             "Rows": 1,
             "BgColor": "#FFFFFF",
-            "ActionType": "reply",
+            "ActionType": "open-url",
             "ActionBody": SIGN_UP_FOR_COURSE.get(KEY_CALLBACK),
             "Text": SIGN_UP_FOR_COURSE.get(KEY_TEXT)
         }
@@ -323,7 +323,6 @@ def get_messages(message: Message):
         keyboard = COURSES_KEYBOARD
         reply_message = COURSES.get(KEY_TEXT)
 
-
     elif text == DAY_OF_WEAK[0].get(KEY_CALLBACK):
         keyboard = TIMETABLE_KEYBOARD
         reply_message = DAY_OF_WEAK[0].get(KEY_TEXT)
@@ -351,7 +350,7 @@ def get_messages(message: Message):
 
     else:
         keyboard = START_KEYBOARD
-        reply_message = HELLO_MESSAGE
+        reply_message = "Что вас инетересует?"
 
     if reply_message is None:
         return [KeyboardMessage(keyboard=keyboard)]
