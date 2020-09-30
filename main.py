@@ -19,55 +19,71 @@ import time
 
 user_ids = []
 
-KEY_ACTION_TYPE = "action_type"
+KEY_CALLBACK = "action_type"
 KEY_TEXT = "text"
 
 BACK = {
-    KEY_ACTION_TYPE: "back",
+    KEY_CALLBACK: "back",
     KEY_TEXT: "Назад"
 }
 
 DAY_OF_WEAK = [
-    {KEY_ACTION_TYPE: "monday",
+    {KEY_CALLBACK: "monday",
      KEY_TEXT: "Понедельник"},
-    {KEY_ACTION_TYPE: "tuesday",
+    {KEY_CALLBACK: "tuesday",
      KEY_TEXT: "Вторник"},
-    {KEY_ACTION_TYPE: "wednesday",
+    {KEY_CALLBACK: "wednesday",
      KEY_TEXT: "Среда"},
-    {KEY_ACTION_TYPE: "thursday",
+    {KEY_CALLBACK: "thursday",
      KEY_TEXT: "Четверг"},
-    {KEY_ACTION_TYPE: "friday",
+    {KEY_CALLBACK: "friday",
      KEY_TEXT: "Пятница"},
-    {KEY_ACTION_TYPE: "saturday",
+    {KEY_CALLBACK: "saturday",
      KEY_TEXT: "Суббота"},
-    {KEY_ACTION_TYPE: "sunday",
+    {KEY_CALLBACK: "sunday",
      KEY_TEXT: "Воскресенье"},
 ]
 
-TIMETABLE = {KEY_ACTION_TYPE: "timetable",
+TIMETABLE = {KEY_CALLBACK: "timetable",
              KEY_TEXT: "Расписание"}
 
-NEWS = {KEY_ACTION_TYPE: "news",
+NEWS = {KEY_CALLBACK: "news",
         KEY_TEXT: "Новости ЦМИТ"}
 
-PAY_NOW = {KEY_ACTION_TYPE: "pay_now",
-           KEY_TEXT: "Оплатить сейчас"}
+PAY = {KEY_CALLBACK: "pay_late",
+       KEY_TEXT: 'Оплатить'}
 
-PAY_LATE = {KEY_ACTION_TYPE: "pay_late",
-            KEY_TEXT: 'Оплатить позже'}
+COURSES = {KEY_CALLBACK: "courses",
+           KEY_TEXT: 'Курсы'}
+
+COURSE_3D_MODELING = {KEY_CALLBACK: "3d_modeling",
+                      KEY_TEXT: '3D моделирование'}
+COURSE_MULTIMEDIA = {KEY_CALLBACK: "multimedia",
+                     KEY_TEXT: 'Мультимедиа'}
+COURSE_PROGRAMMING = {KEY_CALLBACK: "programming",
+                      KEY_TEXT: 'Программирование'}
+COURSE_GRAPHIC_DESIGN = {KEY_CALLBACK: "graphic_design",
+                         KEY_TEXT: 'Графический дизайн'}
+COURSE_UAV = {KEY_CALLBACK: "uav",
+              KEY_TEXT: 'БПЛА'}
+COURSE_ALGORITHMIC = {KEY_CALLBACK: "algorithmic",
+                      KEY_TEXT: 'Алгоритмика'}
+
+SIGN_UP_FOR_COURSE = {KEY_CALLBACK: "sign_up_for_course",
+                      KEY_TEXT: 'Записаться на курс'}
 
 
 def get_timetable_buttons():
     buttons = []
     for day_of_weak in DAY_OF_WEAK:
-        if day_of_weak.get(KEY_ACTION_TYPE) == DAY_OF_WEAK[6].get(KEY_ACTION_TYPE):
+        if day_of_weak.get(KEY_CALLBACK) == DAY_OF_WEAK[6].get(KEY_CALLBACK):
             break
         buttons.append({
             "Columns": 3,
             "Rows": 1,
             "BgColor": "#FFFFFF",
             "ActionType": "reply",
-            "ActionBody": day_of_weak.get(KEY_ACTION_TYPE),
+            "ActionBody": day_of_weak.get(KEY_CALLBACK),
             "Text": day_of_weak.get(KEY_TEXT)
         })
 
@@ -76,7 +92,7 @@ def get_timetable_buttons():
         "Rows": 1,
         "BgColor": "#FFFFFF",
         "ActionType": "reply",
-        "ActionBody": DAY_OF_WEAK[6].get(KEY_ACTION_TYPE),
+        "ActionBody": DAY_OF_WEAK[6].get(KEY_CALLBACK),
         "Text": DAY_OF_WEAK[6].get(KEY_TEXT)
     })
 
@@ -85,7 +101,7 @@ def get_timetable_buttons():
         "Rows": 1,
         "BgColor": "#FFFFFF",
         "ActionType": "reply",
-        "ActionBody": BACK.get(KEY_ACTION_TYPE),
+        "ActionBody": BACK.get(KEY_CALLBACK),
         "Text": BACK.get(KEY_TEXT)
     })
 
@@ -99,7 +115,7 @@ START_KEYBOARD = {
         "Rows": 1,
         "BgColor": "#FFFFFF",
         "ActionType": "reply",
-        "ActionBody": TIMETABLE.get(KEY_ACTION_TYPE),
+        "ActionBody": TIMETABLE.get(KEY_CALLBACK),
         "Text": TIMETABLE.get(KEY_TEXT)
     },
         {
@@ -107,7 +123,7 @@ START_KEYBOARD = {
             "Rows": 1,
             "BgColor": "#FFFFFF",
             "ActionType": "reply",
-            "ActionBody": NEWS.get(KEY_ACTION_TYPE),
+            "ActionBody": NEWS.get(KEY_CALLBACK),
             "Text": NEWS.get(KEY_TEXT)
         },
         {
@@ -115,16 +131,24 @@ START_KEYBOARD = {
             "Rows": 1,
             "BgColor": "#FFFFFF",
             "ActionType": "reply",
-            "ActionBody": PAY_NOW.get(KEY_ACTION_TYPE),
-            "Text": PAY_NOW.get(KEY_TEXT)
+            "ActionBody": PAY.get(KEY_CALLBACK),
+            "Text": PAY.get(KEY_TEXT)
         },
         {
             "Columns": 6,
             "Rows": 1,
             "BgColor": "#FFFFFF",
             "ActionType": "reply",
-            "ActionBody": PAY_LATE.get(KEY_ACTION_TYPE),
-            "Text": PAY_LATE.get(KEY_TEXT)
+            "ActionBody": COURSES.get(KEY_CALLBACK),
+            "Text": COURSES.get(KEY_TEXT)
+        },
+        {
+            "Columns": 6,
+            "Rows": 1,
+            "BgColor": "#FFFFFF",
+            "ActionType": "reply",
+            "ActionBody": SIGN_UP_FOR_COURSE.get(KEY_CALLBACK),
+            "Text": SIGN_UP_FOR_COURSE.get(KEY_TEXT)
         }
     ]
 }
@@ -132,6 +156,60 @@ START_KEYBOARD = {
 TIMETABLE_KEYBOARD = {
     "Type": "keyboard",
     "Buttons": get_timetable_buttons()
+}
+
+COURSES_KEYBOARD = {
+    "Type": "keyboard",
+    "Buttons": [{
+        "Columns": 3,
+        "Rows": 1,
+        "BgColor": "#FFFFFF",
+        "ActionType": "reply",
+        "ActionBody": COURSE_3D_MODELING.get(KEY_CALLBACK),
+        "Text": COURSE_3D_MODELING.get(KEY_TEXT)
+    },
+        {
+            "Columns": 3,
+            "Rows": 1,
+            "BgColor": "#FFFFFF",
+            "ActionType": "reply",
+            "ActionBody": COURSE_MULTIMEDIA.get(KEY_CALLBACK),
+            "Text": COURSE_MULTIMEDIA.get(KEY_TEXT)
+        },
+        {
+            "Columns": 3,
+            "Rows": 1,
+            "BgColor": "#FFFFFF",
+            "ActionType": "reply",
+            "ActionBody": COURSE_PROGRAMMING.get(KEY_CALLBACK),
+            "Text": COURSE_PROGRAMMING.get(KEY_TEXT)
+        },
+        {
+            "Columns": 3,
+            "Rows": 1,
+            "BgColor": "#FFFFFF",
+            "ActionType": "reply",
+            "ActionBody": COURSE_GRAPHIC_DESIGN.get(KEY_CALLBACK),
+            "Text": COURSE_GRAPHIC_DESIGN.get(KEY_TEXT)
+        },
+        {
+            "Columns": 3,
+            "Rows": 1,
+            "BgColor": "#FFFFFF",
+            "ActionType": "reply",
+            "ActionBody": COURSE_UAV.get(KEY_CALLBACK),
+            "Text": COURSE_UAV.get(KEY_TEXT)
+        },
+        {
+            "Columns": 3,
+            "Rows": 1,
+            "BgColor": "#FFFFFF",
+            "ActionType": "reply",
+            "ActionBody": COURSE_ALGORITHMIC.get(KEY_CALLBACK),
+            "Text": COURSE_ALGORITHMIC.get(KEY_TEXT)
+        },
+
+    ]
 }
 
 bot_configuration = BotConfiguration(
@@ -151,16 +229,13 @@ HELLO_MESSAGE = "Вас приветствует цифровой помощни
 
 def get_messages(message: Message):
     text = message.text
-    if text == TIMETABLE.get(KEY_ACTION_TYPE):
+    if text == TIMETABLE.get(KEY_CALLBACK):
         keyboard = TIMETABLE_KEYBOARD
         reply_message = None
-    elif text == NEWS.get(KEY_ACTION_TYPE):
+    elif text == NEWS.get(KEY_CALLBACK):
         keyboard = START_KEYBOARD
         reply_message = NEWS.get(KEY_TEXT)
-    elif text == PAY_NOW.get(KEY_ACTION_TYPE):
-        keyboard = START_KEYBOARD
-        reply_message = PAY_NOW.get(KEY_TEXT)
-    elif text == PAY_LATE.get(KEY_ACTION_TYPE):
+    elif text == PAY.get(KEY_CALLBACK):
         keyboard = START_KEYBOARD
         reply_message = 'Юридический адрес: 628452, АО Ханты-Мансийский Автономный округ- Югра, район Сургутский, ' \
                         'поселок солнечный, улица Дорожная, дом 7, литера а, офис 21\n' \
@@ -178,28 +253,28 @@ def get_messages(message: Message):
                         'Расчетный счет: 40702810267170005394\n\n' \
                         'Генеральный директор: Тарасович Павел Юрьевич'
 
-    elif text == DAY_OF_WEAK[0].get(KEY_ACTION_TYPE):
+    elif text == DAY_OF_WEAK[0].get(KEY_CALLBACK):
         keyboard = TIMETABLE_KEYBOARD
         reply_message = DAY_OF_WEAK[0].get(KEY_TEXT)
-    elif text == DAY_OF_WEAK[1].get(KEY_ACTION_TYPE):
+    elif text == DAY_OF_WEAK[1].get(KEY_CALLBACK):
         keyboard = TIMETABLE_KEYBOARD
         reply_message = DAY_OF_WEAK[1].get(KEY_TEXT)
-    elif text == DAY_OF_WEAK[2].get(KEY_ACTION_TYPE):
+    elif text == DAY_OF_WEAK[2].get(KEY_CALLBACK):
         keyboard = TIMETABLE_KEYBOARD
         reply_message = DAY_OF_WEAK[2].get(KEY_TEXT)
-    elif text == DAY_OF_WEAK[3].get(KEY_ACTION_TYPE):
+    elif text == DAY_OF_WEAK[3].get(KEY_CALLBACK):
         keyboard = TIMETABLE_KEYBOARD
         reply_message = DAY_OF_WEAK[3].get(KEY_TEXT)
-    elif text == DAY_OF_WEAK[4].get(KEY_ACTION_TYPE):
+    elif text == DAY_OF_WEAK[4].get(KEY_CALLBACK):
         keyboard = TIMETABLE_KEYBOARD
         reply_message = DAY_OF_WEAK[4].get(KEY_TEXT)
-    elif text == DAY_OF_WEAK[5].get(KEY_ACTION_TYPE):
+    elif text == DAY_OF_WEAK[5].get(KEY_CALLBACK):
         keyboard = TIMETABLE_KEYBOARD
         reply_message = DAY_OF_WEAK[5].get(KEY_TEXT)
-    elif text == DAY_OF_WEAK[6].get(KEY_ACTION_TYPE):
+    elif text == DAY_OF_WEAK[6].get(KEY_CALLBACK):
         keyboard = TIMETABLE_KEYBOARD
         reply_message = DAY_OF_WEAK[6].get(KEY_TEXT)
-    elif text == BACK.get(KEY_ACTION_TYPE):
+    elif text == BACK.get(KEY_CALLBACK):
         keyboard = START_KEYBOARD
         reply_message = None
 
@@ -209,9 +284,6 @@ def get_messages(message: Message):
 
     if reply_message is None:
         return [KeyboardMessage(keyboard=keyboard)]
-    elif reply_message == PAY_NOW.get(KEY_TEXT):
-        print("here")
-        return [URLMessage(keyboard=keyboard, media="https://www.google.com")]
     else:
         return [TextMessage(text=reply_message, keyboard=keyboard)]
 
