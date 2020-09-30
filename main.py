@@ -224,7 +224,7 @@ app = Flask(__name__)
 
 logger = logging.getLogger()
 
-HELLO_MESSAGE = "Вас приветствует цифровой помощник ЦМИТа Вертикаль.\nДля начала взаимодействия нажмите кнопку начать"
+HELLO_MESSAGE = "Вас приветствует цифровой помощник ЦМИТа Вертикаль."
 
 
 def get_messages(message: Message):
@@ -252,6 +252,9 @@ def get_messages(message: Message):
                         'ОКПО: 02816697\n' \
                         'Расчетный счет: 40702810267170005394\n\n' \
                         'Генеральный директор: Тарасович Павел Юрьевич'
+    elif text == COURSES.get(KEY_CALLBACK):
+        keyboard = COURSES_KEYBOARD
+        reply_message = COURSES.get(KEY_TEXT)
 
     elif text == DAY_OF_WEAK[0].get(KEY_CALLBACK):
         keyboard = TIMETABLE_KEYBOARD
