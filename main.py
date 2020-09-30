@@ -208,6 +208,14 @@ COURSES_KEYBOARD = {
             "ActionBody": COURSE_ALGORITHMIC.get(KEY_CALLBACK),
             "Text": COURSE_ALGORITHMIC.get(KEY_TEXT)
         },
+        {
+            "Columns": 6,
+            "Rows": 1,
+            "BgColor": "#FFFFFF",
+            "ActionType": "reply",
+            "ActionBody": SIGN_UP_FOR_COURSE.get(KEY_CALLBACK),
+            "Text": SIGN_UP_FOR_COURSE.get(KEY_TEXT)
+        },
 
     ]
 }
