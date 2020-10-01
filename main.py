@@ -47,9 +47,6 @@ DAY_OF_WEAK = [
 TIMETABLE = {KEY_CALLBACK: "timetable",
              KEY_TEXT: "Расписание"}
 
-NEWS = {KEY_CALLBACK: "news",
-        KEY_TEXT: "Новости ЦМИТ"}
-
 PAY = {KEY_CALLBACK: "pay_late",
        KEY_TEXT: 'Оплатить'}
 
@@ -241,9 +238,6 @@ def get_messages(message: Message):
     if text == TIMETABLE.get(KEY_CALLBACK):
         keyboard = TIMETABLE_KEYBOARD
         reply_message = None
-    elif text == NEWS.get(KEY_CALLBACK):
-        keyboard = START_KEYBOARD
-        reply_message = NEWS.get(KEY_TEXT)
     elif text == PAY.get(KEY_CALLBACK):
         keyboard = START_KEYBOARD
         reply_message = 'Юридический адрес: 628452, АО Ханты-Мансийский Автономный округ- Югра, район Сургутский, ' \
