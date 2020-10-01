@@ -124,14 +124,6 @@ START_KEYBOARD = {
             "Rows": 1,
             "BgColor": "#FFFFFF",
             "ActionType": "reply",
-            "ActionBody": NEWS.get(KEY_CALLBACK),
-            "Text": NEWS.get(KEY_TEXT)
-        },
-        {
-            "Columns": 6,
-            "Rows": 1,
-            "BgColor": "#FFFFFF",
-            "ActionType": "reply",
             "ActionBody": PAY.get(KEY_CALLBACK),
             "Text": PAY.get(KEY_TEXT)
         },
